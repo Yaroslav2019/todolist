@@ -1,0 +1,62 @@
+[
+	{
+		"status": [
+			{
+				"id": 1,
+				"name": "Open"
+			},
+			{
+				"id": 2,
+				"name": "In progress"
+			},
+			{
+				"id": 3,
+				"name": "Done"
+			}
+		],
+		"priority": [
+			{
+				"id": 1,
+				"name": "Low"
+			},
+			{
+				"id": 2,
+				"name": "Minor"
+			},
+			{
+				"id": 3,
+				"name": "Major"
+			},
+			{
+				"id": 4,
+				"name": "High"
+			}
+		],
+		"tasks": [
+			{
+				"id": 0,
+				"name": "Task 0",
+				"status": 1,
+				"priority": 1
+			},
+			{
+				"id": 1,
+				"name": "Task 1",
+				"status": 2,
+				"priority": 4
+			},
+			{
+				"id": 2,
+				"name": "Task 2",
+				"status": 3,
+				"priority": 2
+			},
+			{
+				"id": 3,
+				"name": "Task 3",
+				"status": 1,
+				"priority": 3
+			}
+		]
+	}
+]

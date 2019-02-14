@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Домашняя работа (№20)</title>
+    <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+</head>
+
+<body>
+    <div id="wrapper" class="container">
+        <!-- collapse -->
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="heading">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse">
+                        TODO-list
+                    </a>
+                </h4>
+            </div>
+            <div id="collapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h3>Создать приложение TODO-list для хранения списка задач</h3>
+                            <ul>
+                                <li>Выводить список задач</li>
+                                <li>Создавать, редактировать и удалять созданные задачи</li>
+                                <li>Менять задачам статус (Open (default), In progress, Done)</li>
+                                <li>Менять приоритет задач (Low, Minor, Major, High)</li>
+                                <li>Данные по всем задачам хранить в localStorage</li>
+                                <li>Список возможных статусов, приоритетов и дефолтных задач хранить не в отдельном
+                                    js-файле, а получать посредством AJAX-запроса к файлу data.json</li>
+                                <li>По нажатию на определенную кнопку, отправлять все созданные задачи в формате JSON
+                                    по некоторому пути (эндпоинту)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / collapse -->
+    </div>
+
+
+    <div class="container">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                        aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Tasks list board</a>
+                </div>
+
+                <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" aria-expanded="false" style="height: 1px;">
+                    <form class="navbar-form navbar-left" name="createTask" id="createTask" role="search" style="width: 600px;">
+                        <div class="form-group">
+                            <input type="text" name="name" class="form-control" placeholder="Enter todo task" required="required"
+                                style="width: 400px;" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                    <form class="navbar-form navbar-left" id="sendTasks">
+                        <button type="submit" class="btn btn-success">Send tasks in JSON formate</button>
+                    </form>
+                </div>
+
+                <!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+
+        <div class="alert alert-info alert-dismissible hidden" role="alert" id="infoBlock">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <span class="alert-text"></span>
+        </div>
+
+        <!-- TODOLIST -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div id="listCaption" style="">
+                    <button class="btn btn-info" type="button">Open <span class="badge" id="bageOpen"></span></button>
+                    <button class="btn btn-warning" type="button">In progress <span class="badge" id="bageProgress"></span></button>
+                    <button class="btn btn-success" type="button">Done <span class="badge" id="bageDone"></span></button>
+                </div>
+                <div id="todoList">
+                    <div id="open_list"></div>
+                    <div id="progress_list"></div>
+                    <div id="done_list"></div>
+                </div>
+            </div>
+        </div>
+        <!-- / TODOLIST -->
+
+    </div>
+
+    <!-- Edit task  -->
+    <div class="modal fade" id="editTaskForm" tabindex="-1" role="dialog" aria-labelledby="myTaskModallLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <form name="editTaskForm">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myTaskModallLabel">Edit task data</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label for="brand" class="control-label">Task *</label>
+                            <input type="text" name="name" class="form-control" placeholder="Enter todo task" />
+                            <span class="hidden help-block">*** Fill correct task. Min 2 characters.</span>
+                        </div>
+
+                        <div class="form-group" id="status">
+                            <label for="statusSelect" class="control-label">Status *</label>
+                            <select class="form-control" id="statusSelect" name="status">
+                                <!-- <option class="control-label" value=""></option> -->
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="priority">
+                            <label for="prioritySelect" class="control-label">Priority *</label>
+                            <select class="form-control" id="prioritySelect" name="priority">
+                                <!-- <option class="control-label" value=""></option> -->
+                            </select>
+                        </div>
+
+                        <input type="hidden" name="id" value="" />
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="saveUser">Save</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <!-- / Edit task  -->
+
+    <!-- Preloader -->
+    <div id="preloader" class="" style="display: none">
+        <div class="preloader">
+            <div class="b-ico-preloader"></div>
+            <div class="spinner"></div>
+        </div>
+    </div>
+    <!-- / Preloader -->
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+    <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    
+    <script src="dist/build.js"></script> 
+    
+   <!-- <script src="src/model/TodoList.js"></script>
+    <script src="src/model/Task.js"></script>
+
+    <script src="src/functions/validation.js"></script>
+    <script src="src/functions/createElement.js"></script>
+    <script src="src/functions/helpFunctions.js"></script>
+
+    <script src="src/todolist/workWithTodoForm.js"></script>
+    <script src="src/todolist/showTodoLists.js"></script>
+
+    <script src="src/app.js"></script> -->
+</body>
+
+</html>
