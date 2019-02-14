@@ -13,5 +13,5 @@ P.S.:
 1. git init
 2. git clone https://github.com/Yaroslav2019/todolist.git
 3. npm install
-4. babel app.js -o build.js
+4. babel src/app.js -o dist/build.js
 5. babel src/ -d dist/
