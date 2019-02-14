@@ -10,6 +10,8 @@
 
 P.S.: 
 Для запуска приложения необходимо сделать (in terminal):
-1. git init + git clone https://github.com/Yaroslav2019/todolist.git
-2. Run npm install
-3. Run babel src/ -d dist/
+1. git init
+2. git clone https://github.com/Yaroslav2019/todolist.git
+3. npm install
+4. babel app.js -o build.js
+5. babel src/ -d dist/
